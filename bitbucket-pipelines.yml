@@ -4,26 +4,27 @@ test: &test
   step:
     name: Test
     script:
-    - npm install -g bats
-    - chmod a+x test/*.bats
-    - bats test/test.bats
+      - npm install -g bats
+      - chmod a+x test/*.bats
+      - bats test/test.bats
     services:
-    - docker
+      - docker
 
 push: &push
   step:
     name: Push and Tag
+    image: python:3.7
     script:
-    - pip install semversioner==0.*
-    - chmod a+x ci-scripts/release.sh
-    - ./ci-scripts/release.sh tmack8001/$BITBUCKET_REPO_SLUG
+      - pip install semversioner==0.*
+      - chmod a+x ci-scripts/release.sh
+      - ./ci-scripts/release.sh tmack8001/$BITBUCKET_REPO_SLUG
     services:
-    - docker
+      - docker
 
 pipelines:
   default:
-  - <<: *test
+    - <<: *test
   branches:
     master:
-    - <<: *test
-    - <<: *push
+      - <<: *test
+      - <<: *push
