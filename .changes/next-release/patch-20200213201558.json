@@ -1,0 +1,4 @@
+{
+  "type": "patch",
+  "description": "Fix invalid environment variables for Jira Authentication."
+}
