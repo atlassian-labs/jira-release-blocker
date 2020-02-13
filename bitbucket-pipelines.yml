@@ -16,8 +16,8 @@ push: &push
     image: python:3.7
     script:
       - pip install semversioner==0.*
-      - chmod a+x ci-scripts/release.sh
-      - ./ci-scripts/release.sh tmack8001/$BITBUCKET_REPO_SLUG
+      - chmod a+x bin/release.sh
+      - ./bin/release.sh $DOCKERHUB_USERNAME/$BITBUCKET_REPO_SLUG
     services:
       - docker
 
