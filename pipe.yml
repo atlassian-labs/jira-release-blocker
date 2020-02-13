@@ -1,5 +1,5 @@
 name: Release Blockers Pipe
-image: trevormack/release-blockers-pipe:0.1.0
+image: trevormack/release-blockers-pipe:0.0.1
 variables:
   - name: JIRA_USERNAME
     default: "$JIRA_USERNAME"

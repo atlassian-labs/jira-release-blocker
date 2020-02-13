@@ -1,0 +1,6 @@
+[
+  {
+    "description": "Fix bitbucket pipelines to have initial release.",
+    "type": "patch"
+  }
+]

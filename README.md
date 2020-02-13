@@ -10,7 +10,7 @@ Add the following snippet to the script section of your `bitbucket-pipelines.yml
 
 ```yaml
 script:
-  - pipe: trevormack/release-blockers-pipe:0.1.0
+  - pipe: trevormack/release-blockers-pipe:0.0.1
     variables:
       JIRA_JQL: "<string>"
       JIRA_CLOUD_ID: "<string>"
