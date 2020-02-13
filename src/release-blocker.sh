@@ -34,7 +34,7 @@ enable_debug
 # TODO (tmack) can we support bitbucket pipelines rollback, https://confluence.atlassian.com/bitbucket/rollbacks-981147477.html
 
 # Always allow rollback deployments if configured
-if [ "${BLOCK_ROLLBACK_DEPLOYS}" = true && "${bamboo_deploy_rollback}" = true ]; then
+if [ "${ALLOW_ROLLBACK_DEPLOYS}" = true && "${bamboo_deploy_rollback}" = true ]; then
   success "Proceed with the rollback deployment";
 fi
 
@@ -53,16 +53,19 @@ elif [[ ! -z "${JIRA_CLOUD_ID}" ]]; then
 fi
 
 # check for Jira Authentication configuration
-# current limitation: only supported User API Tokens, https://confluence.atlassian.com/cloud/api-tokens-938839638.html
-if [[ -z "${JIRA_USERNAME}" || -z "${JIRA_API_TOKEN}" ]]; then
-    warning "Jira Release Blockers Misconfigured requires user authentication configuration JIRA_USERNAME and JIRA_API_TOKEN";
+if [[ -z "${JIRA_USERNAME}" ]]; then
+    fail "JIRA_USERNAME environment variable missing";
+fi
+
+# current limitation: only supported User API Tokens
+if [[ -z "${JIRA_API_TOKEN}" ]]; then
     warning "Create an API Token via instructions provided here: https://confluence.atlassian.com/cloud/api-tokens-938839638.html";
-    fail "missing required authentication configuration";
+    fail "JIRA_API_TOKEN environment variable missing";
 fi
 
 # We fetch all the issues that match the provided JQL search criteria (filter or native JQL supported).
 HTTP_RESPONSE=$(
-  curl --user "${bamboo_cloud_admin_jira_user}@atlassian.com:${bamboo_cloud_admin_jira_user_secret_api_token}" \
+  curl --user "${JIRA_USERNAME}:${JIRA_API_TOKEN}" \
        --header 'Accept: application/json' \
        --url $JIRA_BLOCKERS_URL \
 )

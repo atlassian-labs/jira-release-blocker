@@ -15,6 +15,8 @@ script:
     variables:
       JIRA_JQL: "<string>"
       JIRA_CLOUD_ID: "<string>"
+      JIRA_USERNAME: "<string>"
+      JIRA_API_TOKEN: $JIRA_API_TOKEN # DO NOT type value of api_token here, instead store as "secure" environment variable in pipelines settings
       # JIRA_HOSTNAME: "<string>" # Optional, required if JIRA_CLOUD_ID not specified
 ```
 
@@ -25,10 +27,14 @@ script:
 | JIRA_JQL (*)           | Jira Query Language (JQL) for executing a search against a Jira Instance.    |
 | JIRA_CLOUD_ID (1*)     | Cloud ID of the Jira Site to execute a search against.                       |
 | JIRA_HOSTNAME (1*)     | Jira Hostname to use if Jira Cloud ID isn't specified.                       |
+| JIRA_USERNAME (*)      | Username of the user you want this pipe to query Jira with (remember project permissions).                       |
+| JIRA_API_TOKEN (***)   | API Token associated with JIRA_USERNAME stored as a secure environment variable.                       |
 | ALLOW_ROLLBACK_DEPLOYS | Boolean to opt rollback deploys into release blockers. Default: `true`       |
 | DEBUG                  | Turn on extra debug information. Default: `false`.                           |
 
 _(*) = required variable._
+
+_(***) = required secure environment variable._
 
 _(1*) = at least one of these variables is required._
 
