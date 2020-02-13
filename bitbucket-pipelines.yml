@@ -1,21 +1,29 @@
 image: atlassian/default-image:2
 
+test: &test
+  step:
+    name: Test
+    script:
+    - npm install -g bats
+    - chmod a+x test/*.bats
+    - bats test/test.bats
+    services:
+    - docker
+
+push: &push
+  step:
+    name: Push and Tag
+    script:
+    - pip install semversioner==0.*
+    - chmod a+x ci-scripts/release.sh
+    - ./ci-scripts/release.sh tmack8001/$BITBUCKET_REPO_SLUG
+    services:
+    - docker
+
 pipelines:
+  default:
+  - <<: *test
   branches:
     master:
-      - step:
-          name: Build and Push
-          deployment: production
-          script:
-            # Build an push image
-            - VERSION="1.$BITBUCKET_BUILD_NUMBER"
-            - IMAGE="$DOCKERHUB_USERNAME/$BITBUCKET_REPO_SLUG"
-            - docker login --username "$DOCKERHUB_USERNAME" --password "${DOCKERHUB_PASSWORD}"
-            - docker image build -t ${IMAGE}:${VERSION} .
-            - docker image tag ${IMAGE}:${VERSION} ${IMAGE}:latest
-            - docker image push ${IMAGE}
-            # Push tags
-            - git tag -a "${VERSION}" -m "Tagging for release ${VERSION}"
-            - git push origin ${VERSION}
-          services:
-            - docker
+    - <<: *test
+    - <<: *push
