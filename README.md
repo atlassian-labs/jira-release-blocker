@@ -8,6 +8,7 @@ This [Bitbucket Pipelines Pipe](https://bitbucket.org/product/features/pipelines
 ## YAML Definition
 Add the following snippet to the script section of your `bitbucket-pipelines.yml` file:
 
+
 ```yaml
 script:
   - pipe: trevormack/release-blockers-pipe:0.0.1
@@ -15,8 +16,7 @@ script:
       JIRA_JQL: "<string>"
       JIRA_CLOUD_ID: "<string>"
       # JIRA_HOSTNAME: "<string>" # Optional, required if JIRA_CLOUD_ID not specified
-
-````
+```
 
 ## Variables
 
@@ -29,6 +29,7 @@ script:
 | DEBUG                  | Turn on extra debug information. Default: `false`.                           |
 
 _(*) = required variable._
+
 _(1*) = at least one of these variables is required._
 
 ## Support
