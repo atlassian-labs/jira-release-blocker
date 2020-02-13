@@ -1,0 +1,21 @@
+image: atlassian/default-image:2
+
+pipelines:
+  branches:
+    master:
+      - step:
+          name: Build and Push
+          deployment: production
+          script:
+            # Build an push image
+            - VERSION="1.$BITBUCKET_BUILD_NUMBER"
+            - IMAGE="$DOCKERHUB_USERNAME/$BITBUCKET_REPO_SLUG"
+            - docker login --username "$DOCKERHUB_USERNAME" --password "${DOCKERHUB_PASSWORD}"
+            - docker image build -t ${IMAGE}:${VERSION} .
+            - docker image tag ${IMAGE}:${VERSION} ${IMAGE}:latest
+            - docker image push ${IMAGE}
+            # Push tags
+            - git tag -a "${VERSION}" -m "Tagging for release ${VERSION}"
+            - git push origin ${VERSION}
+          services:
+            - docker

@@ -1,0 +1,29 @@
+name: Release Blockers Pipe
+image: trevormack/release-blockers-pipe:0.1.0
+variables:
+  - name: JIRA_USERNAME
+    default: "$JIRA_USERNAME"
+  - name: JIRA_API_TOKEN
+    default: "$JIRA_API_TOKEN"
+  - name: JIRA_JQL
+    default: "$JIRA_JQL"
+  - name: JIRA_CLOUD_ID
+    default: "$JIRA_CLOUD_ID"
+  - name: JIRA_HOSTNAME
+    default: "$JIRA_HOSTNAME"
+  - name: ALLOW_ROLLBACK_DEPLOYS
+    default: "$ALLOW_ROLLBACK_DEPLOYS"
+  - name: DEBUG
+    default: "$DEBUG"
+description: This pipe will enforce there aren't any release blockers before allowing a deployment.
+repository: https://bitbucket.org/trevormack/release-blockers-pipe
+maintainer: tmack@atlassian.com
+icon:
+tags:
+  - bitbucket-pipelines
+  - jira
+  - deployment
+  - pipes
+  - bash
+  - release
+  - release-blocker
