@@ -11,7 +11,7 @@ Add the following snippet to the script section of your `bitbucket-pipelines.yml
 
 ```yaml
 script:
-  - pipe: tmack8001/release-blockers-pipe:0.0.2
+  - pipe: tmack8001/release-blockers-pipe:0.0.3
     variables:
       JIRA_JQL: "<string>"
       JIRA_CLOUD_ID: "<string>"

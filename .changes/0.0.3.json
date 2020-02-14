@@ -1,0 +1,6 @@
+[
+  {
+    "description": "Add additional tests and fix curl command while also limiting response fields from jira via the fields query parameter greatly improving debug-ability.",
+    "type": "patch"
+  }
+]
