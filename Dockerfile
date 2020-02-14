@@ -1,6 +1,6 @@
 FROM alpine:3.9
 
-RUN apk add --update --no-cache bash
+RUN apk add --update --no-cache bash curl jq
 
 COPY src /
 COPY LICENSE.txt pipe.yml README.md /

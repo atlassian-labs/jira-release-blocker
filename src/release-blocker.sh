@@ -34,22 +34,22 @@ enable_debug
 # TODO (tmack) can we support bitbucket pipelines rollback, https://confluence.atlassian.com/bitbucket/rollbacks-981147477.html
 
 # Always allow rollback deployments if configured
-if [ "${ALLOW_ROLLBACK_DEPLOYS}" = true && "${bamboo_deploy_rollback}" = true ]; then
+if [[ "${ALLOW_ROLLBACK_DEPLOYS}" = true && "${bamboo_deploy_rollback}" = true ]]; then
   success "Proceed with the rollback deployment";
 fi
 
-
 # check for Jira Site configuration data
-if [[ -z "${JIRA_HOSTNAME}" || -z "${JIRA_CLOUD_ID}" ]]; then
+if [[ -z "${JIRA_HOSTNAME}" && -z "${JIRA_CLOUD_ID}" ]]; then
     fail "JIRA_CLOUD_ID or JIRA_HOSTNAME environment variable missing";
 fi
 
-JIRA_ENDPOINT="/rest/api/2/search?jql=${JIRA_JQL}"
+API_HOSTNAME="api.atlassian.com"
+JIRA_ENDPOINT="/rest/api/2/search?fields=summary&jql=${JIRA_JQL}"
 
 if [[ ! -z "${JIRA_HOSTNAME}" ]]; then
     JIRA_BLOCKERS_URL="https://${JIRA_HOSTNAME}${JIRA_ENDPOINT}"
 elif [[ ! -z "${JIRA_CLOUD_ID}" ]]; then
-    JIRA_BLOCKERS_URL="https://${API_HOSTNAME}/ex/jira/${JIRA_CLOUD_ID}/${JIRA_ENDPOINT}"
+    JIRA_BLOCKERS_URL="https://${API_HOSTNAME}/ex/jira/${JIRA_CLOUD_ID}${JIRA_ENDPOINT}"
 fi
 
 # check for Jira Authentication configuration
@@ -64,19 +64,34 @@ if [[ -z "${JIRA_API_TOKEN}" ]]; then
 fi
 
 # We fetch all the issues that match the provided JQL search criteria (filter or native JQL supported).
+# HTTP_RESPONSE=$(
+#   curl -X GET \
+#        -w '%{stderr}{"status": %{http_code}, "body":%{stdout}}' -s -o - \
+#        --user "${JIRA_USERNAME}:${JIRA_API_TOKEN}" \
+#        --header 'Accept: application/json' \
+#        --url $JIRA_BLOCKERS_URL 2>&1 \
+# )
+
+# store the whole response with the status at the and
 HTTP_RESPONSE=$(
-  curl --user "${JIRA_USERNAME}:${JIRA_API_TOKEN}" \
-       --header 'Accept: application/json' \
-       --url $JIRA_BLOCKERS_URL \
+    curl --silent --write-out "HTTPSTATUS:%{http_code}" \
+        --user "${JIRA_USERNAME}:${JIRA_API_TOKEN}" \
+        --header 'Accept: application/json' \
+        --url $JIRA_BLOCKERS_URL 2>&1 \
 )
 
+# extract the body
 HTTP_BODY=$(
-  echo $HTTP_RESPONSE | sed -e 's/HTTPSTATUS\:.*//g'
+    echo "$HTTP_RESPONSE" | sed -e 's/HTTPSTATUS\:.*//g'
 )
 
+# extract the status
 HTTP_STATUS=$(
-  echo $HTTP_RESPONSE | tr -d '\n' | sed -e 's/.*HTTPSTATUS'://
+    echo "$HTTP_RESPONSE" | tr -d '\n' | sed -e 's/.*HTTPSTATUS://'
 )
+
+debug $HTTP_BODY
+debug $HTTP_STATUS
 
 if [ ! $HTTP_STATUS -eq 200 ]; then
   fail "Error: Could not fetch release blockers from Jira [Http Status: $HTTP_STATUS]";
