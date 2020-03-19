@@ -29,7 +29,7 @@ script:
 
 ```yaml
 script:
-  - pipe: docker://atlassian/release-blockers:0.0.3
+  - pipe: docker://atlassianlabs/release-blockers:0.0.3
     variables:
       JIRA_JQL: "<string>"
       JIRA_CLOUD_ID: "<string>"

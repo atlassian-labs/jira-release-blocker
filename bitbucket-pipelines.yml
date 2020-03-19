@@ -17,7 +17,7 @@ push: &push
     script:
       - pip install semversioner==0.*
       - chmod a+x bin/release.sh
-      - ./bin/release.sh $DOCKERHUB_USERNAME/$BITBUCKET_REPO_SLUG
+      - ./bin/release.sh $DOCKERHUB_NAMESPACE/$BITBUCKET_REPO_SLUG
     services:
       - docker
 

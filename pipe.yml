@@ -1,5 +1,5 @@
 name: Release Blockers
-image: tmack8001/release-blockers-pipe:0.0.3
+image: atlassianlabs/release-blockers-pipe:0.1.0
 variables:
   - name: JIRA_USERNAME
     default: "$JIRA_USERNAME"
