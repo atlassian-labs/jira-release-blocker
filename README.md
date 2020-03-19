@@ -16,7 +16,7 @@ When referencing a Bitbucket Pipe via a repository reference `<owner>/<repo>:<ta
 
 ```yaml
 script:
-  - pipe: atlassian/release-blockers:0.0.3
+  - pipe: atlassian/release-blockers:0.1.0
     variables:
       JIRA_JQL: "<string>"
       JIRA_CLOUD_ID: "<string>"
@@ -29,7 +29,7 @@ script:
 
 ```yaml
 script:
-  - pipe: docker://atlassianlabs/release-blockers:0.0.3
+  - pipe: docker://atlassianlabs/release-blockers:0.1.0
     variables:
       JIRA_JQL: "<string>"
       JIRA_CLOUD_ID: "<string>"
