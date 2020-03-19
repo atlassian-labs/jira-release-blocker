@@ -1,5 +1,5 @@
 # Bitbucket Pipe: release-blockers
-[![Atlassian license](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat-square)](LICENSE) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](CONTRIBUTING.md) ![build](https://img.shields.io/bitbucket/pipelines/atlassian/release-blockers) ![version](https://img.shields.io/docker/v/tmack8001/release-blockers-pipe?sort=semver)
+[![Atlassian license](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat-square)](LICENSE) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](CONTRIBUTING.md) ![build](https://img.shields.io/bitbucket/pipelines/atlassian/release-blockers) ![version](https://img.shields.io/docker/v/atlassianlabs/release-blockers?sort=semver)
 
 When building web applications industry best practices are to have a CI/CD (continuous integration and continuous delivery) pipeline put in place. With Bitbucket Pipelines this is as easy as providing a bitbucket-pipelines.yml file that contains the logic and code to do just that. However, infrequently the development team might want to block releases to their production environment due to various reasons (earnings calls, major traffic days, release windows, significant new feature, change review, and several more).
 
