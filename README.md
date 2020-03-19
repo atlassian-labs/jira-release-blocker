@@ -1,5 +1,7 @@
-# release-blockers-pipe
-When building web applications industry best practicies are to have a CI/CD (continuous integration and continuous delivery) pipeline put in place. With Bitbucket Pipelines this is as easy as providing a bitbucket-pipelines.yml file that contains the logic and code to do just that. However, infrequently the development team might want to block releases to their production environment due to various reasons (earnings calls, major traffic days, release windows, significant new feature, change review, and several more). 
+# Bitbucket Pipe: release-blockers
+[![Atlassian license](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat-square)](LICENSE) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](CONTRIBUTING.md) ![build](https://img.shields.io/bitbucket/pipelines/atlassian/release-blockers) ![version](https://img.shields.io/docker/v/tmack8001/release-blockers-pipe?sort=semver)
+
+When building web applications industry best practices are to have a CI/CD (continuous integration and continuous delivery) pipeline put in place. With Bitbucket Pipelines this is as easy as providing a bitbucket-pipelines.yml file that contains the logic and code to do just that. However, infrequently the development team might want to block releases to their production environment due to various reasons (earnings calls, major traffic days, release windows, significant new feature, change review, and several more).
 
 A great way to implement this type of release block is to configure a Jira Issue as a "release blocker" (typically using labels). Whenever this release blocker is found the release to your production environment the release pipeline would bail over before continuing waiting for a human to resolve the release blocker ticket.
 
@@ -10,11 +12,11 @@ Add the following snippet to the script section of your `bitbucket-pipelines.yml
 
 ### (preferred) Bitbucket Repository Reference
 
-When referencing a Bitbucket Pipe via a repository reference `<owner>/<repo>:<tag>` this tells Bitbucket Pipelines to look at the relative `pipes.yml` within that repository for where to find the Pipe Docker image. This is best as this allows the DockerHub namespace to change over time if needed.
+When referencing a Bitbucket Pipe via a repository reference `<owner>/<repo>:<tag>` this tells Bitbucket Pipelines to look at the relative `pipe.yml` within that repository for where to find the Pipe Docker image. This is best as this allows the DockerHub namespace to change over time if needed.
 
 ```yaml
 script:
-  - pipe: atlassian/release-blockers-pipe:0.0.3
+  - pipe: atlassian/release-blockers:0.0.3
     variables:
       JIRA_JQL: "<string>"
       JIRA_CLOUD_ID: "<string>"
@@ -27,7 +29,7 @@ script:
 
 ```yaml
 script:
-  - pipe: docker://tmack8001/release-blockers-pipe:0.0.3
+  - pipe: docker://atlassian/release-blockers:0.0.3
     variables:
       JIRA_JQL: "<string>"
       JIRA_CLOUD_ID: "<string>"
@@ -55,11 +57,24 @@ _(***) = required secure environment variable._
 _(1*) = at least one of these variables is required._
 
 ## Support
-If you’d like help with this pipe, or you have an issue or feature request, let us know.
-The pipe is maintained by tmack@atlassian.com.
+If you'd like help with this pipe, or you have an issue or feature request, let us know.
+The pipe is maintained by Trevor Mack, tmack(at)atlassian.com.
 
-If you’re reporting an issue, please include:
+If you're reporting an issue, please include:
 
 - the version of the pipe
 - relevant logs and error messages
 - steps to reproduce
+
+## Contributions
+
+Contributions to Release Blockers are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details. 
+
+## License
+
+Copyright (c) [2020] Atlassian and others.
+Apache 2.0 licensed, see [LICENSE](LICENSE) file.
+
+<br/>
+
+[![With â¤ï¸ from Atlassian](https://raw.githubusercontent.com/atlassian-internal/oss-assets/master/banner-cheers.png)](https://www.atlassian.com)
