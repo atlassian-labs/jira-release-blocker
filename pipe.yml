@@ -1,5 +1,5 @@
-name: Release Blockers
-image: atlassianlabs/release-blockers-pipe:0.1.0
+name: Jira Release Blocker
+image: atlassianlabs/jira-release-blocker:0.1.0
 variables:
   - name: JIRA_USERNAME
     default: "$JIRA_USERNAME"
@@ -16,7 +16,7 @@ variables:
   - name: DEBUG
     default: "$DEBUG"
 description: This pipe will enforce there aren't any release blockers before allowing a deployment.
-repository: https://bitbucket.org/atlassian/release-blockers
+repository: https://bitbucket.org/atlassian/jira-release-blocker
 maintainer: tmack@atlassian.com
 icon:
 tags:
