@@ -1,6 +1,10 @@
 # Changelog
 Note: version releases in the 0.x.y range may introduce breaking changes.
 
+## 0.1.1
+
+- patch: OSR-475 rename bitbucket pipe to jira-release-blocker
+
 ## 0.1.0
 
 - minor: Prepare for Open Source and Push Docker container to Atlassian Docker Hub organization user.

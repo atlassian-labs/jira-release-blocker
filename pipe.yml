@@ -1,5 +1,5 @@
 name: Jira Release Blocker
-image: atlassianlabs/jira-release-blocker:0.1.0
+image: atlassianlabs/jira-release-blocker:0.1.1
 variables:
   - name: JIRA_USERNAME
     default: "$JIRA_USERNAME"

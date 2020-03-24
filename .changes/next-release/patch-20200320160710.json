@@ -1,4 +1,0 @@
-{
-  "type": "patch",
-  "description": "OSR-475 rename bitbucket pipe to jira-release-blocker"
-}
