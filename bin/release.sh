@@ -32,13 +32,7 @@ docker tag ${IMAGE} ${IMAGE}:${new_version}
 docker push ${IMAGE}
 
 ##
-# Step 4: Setup SSH access for commiting to repository
-##
-echo "Setting up ssh keys for em-bitbucket-bot..."
-(mkdir -p ~/.ssh ; umask  077 ; echo ${SSH_KEY_BASE64} | base64 --decode > ~/.ssh/id_rsa)
-
-##
-# Step 5: Commit back to the repository
+# Step 4: Commit back to the repository
 ##
 echo "Committing updated files to the repository..."
 git add .
@@ -46,7 +40,7 @@ git commit -m "Update files for new version '${new_version}' [skip ci]"
 git push origin ${BITBUCKET_BRANCH}
 
 ##
-# Step 6: Tag the repository
+# Step 5: Tag the repository
 ##
 echo "Tagging for release ${new_version}" "${new_version}"
 git tag -a -m "Tagging for release ${new_version}" "${new_version}"
