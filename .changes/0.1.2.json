@@ -1,0 +1,6 @@
+[
+  {
+    "description": "setup ssh keys for writing to master branch from pipelines build/deployment",
+    "type": "patch"
+  }
+]
