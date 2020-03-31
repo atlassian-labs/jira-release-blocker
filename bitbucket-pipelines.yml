@@ -13,6 +13,7 @@ test: &test
 push: &push
   step:
     name: Push and Tag
+    deployment: Production
     image: python:3.7
     script:
       - pip install semversioner==0.*
