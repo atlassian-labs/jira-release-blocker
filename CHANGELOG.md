@@ -1,6 +1,10 @@
 # Changelog
 Note: version releases in the 0.x.y range may introduce breaking changes.
 
+## 0.1.3
+
+- patch: fix invalid syntax of pipe.yml
+
 ## 0.1.2
 
 - patch: setup ssh keys for writing to master branch from pipelines build/deployment

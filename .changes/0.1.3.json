@@ -1,0 +1,6 @@
+[
+  {
+    "description": "fix invalid syntax of pipe.yml",
+    "type": "patch"
+  }
+]
