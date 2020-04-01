@@ -18,7 +18,6 @@ variables:
 description: This pipe will enforce there aren't any release blockers before allowing a deployment.
 repository: https://bitbucket.org/atlassian/jira-release-blocker
 maintainer: tmack@atlassian.com
-icon:
 tags:
   - bitbucket-pipelines
   - jira
