@@ -16,7 +16,7 @@ When referencing a Bitbucket Pipe via a repository reference `<owner>/<repo>:<ta
 
 ```yaml
 script:
-  - pipe: atlassian/jira-release-blocker:0.1.3
+  - pipe: atlassian/jira-release-blocker:0.2.0
     variables:
       JIRA_JQL: "<string>"
       JIRA_CLOUD_ID: "<string>"
@@ -29,7 +29,7 @@ script:
 
 ```yaml
 script:
-  - pipe: docker://atlassianlabs/jira-release-blocker:0.1.3
+  - pipe: docker://atlassianlabs/jira-release-blocker:0.2.0
     variables:
       JIRA_JQL: "<string>"
       JIRA_CLOUD_ID: "<string>"
@@ -64,7 +64,7 @@ There are a few options for execution in other CI/CD Platforms. The best method 
 If the following returns an error code (non zero) abort the build with a "paused" or "failed" status.
 
 ```bash
-docker run -e JIRA_USERNAME=${username} -e JIRA_API_TOKEN=${api_token} -e JIRA_JQL=<jql-search-string> -e JIRA_HOSTNAME=<my-instance>.atlassian.net atlassianlabs/jira-release-blocker:0.1.3
+docker run -e JIRA_USERNAME=${username} -e JIRA_API_TOKEN=${api_token} -e JIRA_JQL=<jql-search-string> -e JIRA_HOSTNAME=<my-instance>.atlassian.net atlassianlabs/jira-release-blocker:0.2.0
 ```
 
 ### (not recommended) Download individual script files to execute locally

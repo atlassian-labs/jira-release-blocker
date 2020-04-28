@@ -1,6 +1,10 @@
 # Changelog
 Note: version releases in the 0.x.y range may introduce breaking changes.
 
+## 0.2.0
+
+- minor: Add support for encoded and non encoded JQL parameters - Jira Ticket: BLOCK-1
+
 ## 0.1.3
 
 - patch: fix invalid syntax of pipe.yml

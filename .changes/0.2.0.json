@@ -1,0 +1,6 @@
+[
+  {
+    "description": "Add support for encoded and non encoded JQL parameters - Jira Ticket: BLOCK-1",
+    "type": "minor"
+  }
+]
