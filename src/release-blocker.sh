@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 source "$(dirname "$0")/common.sh"
+source "$(dirname "$0")/url-encoding.sh"
 
 #
 # Required globals:
@@ -28,6 +29,7 @@ JIRA_CLOUD_ID=${JIRA_CLOUD_ID:=} # 'DUMMY-158c8204-ff3b-47c2-adbb-a0906ccc722b'
 JIRA_HOSTNAME=${JIRA_HOSTNAME:=} # 'product-fabric.atlassian.net'
 
 enable_debug
+
 # TODO (tmack) check for newer version via commons.sh method check_for_newer_version
 # the above requires the repository to be public and open to the world
 
@@ -43,8 +45,15 @@ if [[ -z "${JIRA_HOSTNAME}" && -z "${JIRA_CLOUD_ID}" ]]; then
     fail "JIRA_CLOUD_ID or JIRA_HOSTNAME environment variable missing";
 fi
 
+DECODED_JQL=$(urldecode "${JIRA_JQL}")      # decode incoming UGC (decoded -> decoded; encoded -> decoded)
+
 API_HOSTNAME="api.atlassian.com"
-JIRA_ENDPOINT="/rest/api/2/search?fields=summary&jql=${JIRA_JQL}"
+JIRA_ENDPOINT="/rest/api/2/search"
+
+FIELDS_QUERY_PARAMETER="fields=summary"
+JQL_QUERY_PARAMETER=${DECODED_JQL}
+
+debug ${JQL_QUERY_PARAMETER};
 
 if [[ ! -z "${JIRA_HOSTNAME}" ]]; then
     JIRA_BLOCKERS_URL="https://${JIRA_HOSTNAME}${JIRA_ENDPOINT}"
@@ -77,7 +86,7 @@ HTTP_RESPONSE=$(
     curl --silent --write-out "HTTPSTATUS:%{http_code}" \
         --user "${JIRA_USERNAME}:${JIRA_API_TOKEN}" \
         --header 'Accept: application/json' \
-        --url $JIRA_BLOCKERS_URL 2>&1 \
+        -G "${JIRA_BLOCKERS_URL}" --data-urlencode "${FIELDS_QUERY_PARAMETER}" --data-urlencode "jql=${JQL_QUERY_PARAMETER}" 2>&1 \
 )
 
 # extract the body
@@ -94,11 +103,27 @@ debug $HTTP_BODY
 debug $HTTP_STATUS
 
 if [ ! $HTTP_STATUS -eq 200 ]; then
+  info $HTTP_BODY
   fail "Error: Could not fetch release blockers from Jira [Http Status: $HTTP_STATUS]";
 fi
 
 TOTAL=$(echo "$HTTP_BODY" | jq .total);
+ISSUES=$(echo $HTTP_BODY | jq '.issues | .[] | {key, title: .fields.summary}')
+
 if [ ! $TOTAL -eq 0 ]; then
+  info "Found following release blockers with JQL query \"${JQL_QUERY_PARAMETER}\""
+
+  if [[ ! -z "${JIRA_HOSTNAME}" ]]; then
+    ISSUE_DATA=`echo $ISSUES | jq --arg HOSTNAME "${JIRA_HOSTNAME}" '["https://" + $HOSTNAME + "/browse/" + .key,.title] | @tsv'`
+  else
+    ISSUE_DATA=$(echo $ISSUES | jq '[.key,.title] | @tsv')
+  fi
+
+  while IFS= read -r line; do
+    info "$line"
+  done <<< "$ISSUE_DATA"
+
+
   fail "!!!Total of $TOTAL release blocker(s) found in Jira!!!";
 else
   success "No release blockers found! Proceed to deployment!";

@@ -56,6 +56,32 @@ _(***) = required secure environment variable._
 
 _(1*) = at least one of these variables is required._
 
+## Use In Other CI/CD Platforms (ie. Bamboo, CircleCi, TravisCI, etc)
+There are a few options for execution in other CI/CD Platforms. The best method to verify that all nessecary files, dependency programs, and configurations are properly setup is to execute the Docker container that would be executed in Bitbucket Pipelines. The alternative is to setup all dependencies yourself and execute the shell script directly.
+
+### (preferred) Pull and Run Docker Container
+
+If the following returns an error code (non zero) abort the build with a "paused" or "failed" status.
+
+```bash
+docker run -e JIRA_USERNAME=${username} -e JIRA_API_TOKEN=${api_token} -e JIRA_JQL=<jql-search-string> -e JIRA_HOSTNAME=<my-instance>.atlassian.net atlassianlabs/jira-release-blocker:0.1.3
+```
+
+### (not recommended) Download individual script files to execute locally
+
+If the following returns an error code (non zero) abort the build with a "paused" or "failed" status.
+
+The benefit with this method is that there is no build dependency on docker, though most build images now adays contain docker runtimes as it is a commonly used containerization framework. Downsize is as dependencies and additional sources are added to jira-release-blocker release engineers will need to update their scripts to be compatible.
+
+```bash
+wget -P / https://bitbucket.org/atlassian/jira-release-blocker/raw/0.1.3/src/release-blocker.sh
+wget -P / https://bitbucket.org/atlassian/jira-release-blocker/raw/0.1.3/src/url-encoding.sh
+wget -P / https://bitbucket.org/bitbucketpipelines/bitbucket-pipes-toolkit-bash/raw/0.6.0/common.sh
+chmod a+x ./*.sh
+
+JIRA_USERNAME=${username} JIRA_API_TOKEN=${api_token} JIRA_JQL=<jql-search-string> JIRA_HOSTNAME=<my-instance>.atlassian.net ./release-blocker.sh
+```
+
 ## Support
 If you'd like help with this pipe, or you have an issue or feature request, let us know.
 The pipe is maintained by Trevor Mack, tmack(at)atlassian.com.
